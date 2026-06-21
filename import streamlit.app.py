@@ -1,30 +1,66 @@
 import streamlit as st
-import pandas as pd
 
+# Konfigurasi halaman
 st.set_page_config(
-    page_title="Dashboard Pelanggan",
-    layout="wide"
+    page_title="Aplikasi Web Saya",
+    page_icon="🚀",
+    layout="centered"
 )
 
-st.title("📊 Dashboard Pelanggan")
+# Header
+st.title("🎉 Selamat Datang di Aplikasi Web Saya")
+st.markdown("---")
 
-FILE_ID = "1z-n2vW1cfp8wYkNkR-aIlDbXJUgQ5C--"
-URL = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
+# Sidebar
+st.sidebar.header("Menu Navigasi")
+menu = st.sidebar.selectbox(
+    "Pilih Halaman:",
+    ["Beranda", "Tentang", "Kontak"]
+)
 
-try:
-    df = pd.read_csv(URL)
+# Konten berdasarkan menu
+if menu == "Beranda":
+    st.header("Beranda")
+    st.write("Ini adalah halaman utama aplikasi web Anda.")
+    
+    # Contoh input
+    nama = st.text_input("Masukkan nama Anda:")
+    if nama:
+        st.success(f"Halo, {nama}! Selamat datang! 👋")
+    
+    # Contoh tombol
+    if st.button("Klik Saya"):
+        st.balloons()
+        st.info("Anda baru saja mengklik tombol!")
 
-    st.success("Data berhasil dimuat")
-
+elif menu == "Tentang":
+    st.header("Tentang Aplikasi")
+    st.write("""
+    Aplikasi ini dibuat menggunakan **Streamlit**, 
+    framework Python untuk membuat aplikasi web dengan cepat dan mudah.
+    """)
+    
+    # Contoh kolom
     col1, col2 = st.columns(2)
-
     with col1:
-        st.metric("Jumlah Baris", len(df))
-
+        st.metric("Pengguna", "1,234", "+12%")
     with col2:
-        st.metric("Jumlah Kolom", len(df.columns))
+        st.metric("Rating", "4.8", "+0.2")
 
-    st.dataframe(df, use_container_width=True)
+elif menu == "Kontak":
+    st.header("Hubungi Kami")
+    
+    with st.form("form_kontak"):
+        email = st.text_input("Email")
+        pesan = st.text_area("Pesan")
+        kirim = st.form_submit_button("Kirim")
+        
+        if kirim:
+            if email and pesan:
+                st.success("Pesan berhasil dikirim!")
+            else:
+                st.error("Mohon isi semua field.")
 
-except Exception as e:
-    st.error(f"Error: {e}")
+# Footer
+st.markdown("---")
+st.caption("© 2024 Aplikasi Web Saya | Dibuat dengan ❤️ dan Streamlit")
